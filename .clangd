@@ -2,6 +2,7 @@
 CompileFlags:
   # 配置头文件路径：OpenCV 路径 + 标准库路径
   Add: 
+    - -std=c++17
     - -I/usr/local/include/opencv4  # 你的 OpenCV 头文件路径（必须和 CMake 一致）
     - -DCV_VERSION_MAJOR=4         # 告诉 clangd 是 OpenCV 4 版本
     - -DOPENCV_4=1
@@ -10,5 +11,6 @@ CompileFlags:
     - -I/usr/include/tesseract
     # Leptonica 头文件路径（Tesseract 依赖，默认路径）
     - -I/usr/include/leptonica
-
+    - -I/usr/local/include/ceres
+    - -I/usr/include/eigen3 
 
