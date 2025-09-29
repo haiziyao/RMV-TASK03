@@ -4,7 +4,7 @@
 // 包含必要的头文件
 #include <vector>
 #include <opencv2/opencv.hpp>
-
+#include "fit.h"
 // 使用命名空间声明（如果需要）
 using namespace cv;
 
@@ -14,7 +14,7 @@ using namespace cv;
 
 // 函数声明，确保参数和返回值类型完整
 void findhsv();
-std::vector<Point> testmain();
+std::vector<Obs> testmain();
 int saveimg();
 
 #endif /* A5FC90DF_DC9B_40A3_8159_1490AC0E4720 */

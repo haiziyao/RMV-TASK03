@@ -7,15 +7,8 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/opencv.hpp>
 #include <ceres/ceres.h>
-#include <iostream>
-#include <opencv2/core.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/matx.hpp>
-#include <opencv2/core/types.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/opencv.hpp>
-#include <opencv2/imgcodecs.hpp>
 #include <opencv2/videoio.hpp>
 #include <ostream>
 #include <string>
@@ -25,7 +18,11 @@ using namespace cv;
 using namespace std;
 
 
-
+struct Obs {
+  double t;
+  double x;
+  double y;
+};
 
 
 int findhsv(){
@@ -117,7 +114,7 @@ int saveimg(){
     return 0;
 }
 
-vector<Point> testmain() {
+vector<Obs> testmain() {
     cout << "Ceres installed!" << endl;
     string filepath = "resources/video.mp4";
     VideoCapture cap ;
@@ -128,15 +125,18 @@ vector<Point> testmain() {
     cv::Mat frame,imgGauss;
     vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
-    vector<Point> goal;
+    vector<Obs> goal;
     Mat hsv,mask;
     Mat result;
+    int count = 1;
+    int H ;
     while (true) {
         cap.read(frame);
         if(frame.empty()){
             cout<<"视频源已经读完了"<<endl;
             break;
         }
+        H = frame.rows;
         GaussianBlur(frame, imgGauss, Size(13,13), 7);
         cvtColor(imgGauss, hsv, COLOR_BGR2HSV);
         inRange(hsv, Scalar(0,0,0), Scalar(179,122,255), mask);
@@ -149,16 +149,15 @@ vector<Point> testmain() {
         for (size_t i = 0; i < contours.size(); i++) {
             drawContours(frame, contours, (int)i, Scalar(0, 0, 255), 1);
         }
-        // 遍历每个轮廓，计算并打印中心坐标
-        for (size_t i = 0; i < contours.size(); i++) {
-            // 计算轮廓的矩（用于求中心）
+
+        for (size_t i = 0; i < contours.size(); i++) {            
             Moments mom = moments(contours[i]);
-            // 避免除零错误（面积为0的轮廓跳过）
             if (mom.m00 != 0){
-                int cx = mom.m10 / mom.m00;
-                int cy = mom.m01 / mom.m00;
-                Point2f center(cx,cy);
-                goal.push_back(center);
+                double cx = static_cast<double>(mom.m10) / mom.m00;
+                double cy = static_cast<double>(mom.m01) / mom.m00;
+                cy = H -cy;
+                Obs obs={static_cast<double>(count++)/60,cx,cy};
+                goal.push_back(obs);
                 cout<<"("<<cx<<","<<cy<<")"<<endl;
             } 
             
@@ -180,3 +179,4 @@ vector<Point> testmain() {
     cv::destroyAllWindows();
     return goal;
 }
+
