@@ -139,7 +139,7 @@ vector<Obs> testmain() {
         H = frame.rows;
         GaussianBlur(frame, imgGauss, Size(13,13), 7);
         cvtColor(imgGauss, hsv, COLOR_BGR2HSV);
-        inRange(hsv, Scalar(0,0,0), Scalar(179,122,255), mask);
+        inRange(hsv, Scalar(0,0,0), Scalar(179,170,255), mask);
         bitwise_not(mask, mask);
         result = mask;
          

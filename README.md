@@ -8,17 +8,18 @@
 #### 结果展示
 ``` cpp
 iter      cost      cost_change  |gradient|   |step|    tr_ratio  tr_radius  ls_iter  iter_time  total_time
-   0  4.283829e+07    0.00e+00    1.43e+05   0.00e+00   0.00e+00  1.00e+04        0    3.06e-03    3.12e-03
-   1  2.450499e+05    4.26e+07    1.12e+04   5.81e+02   9.94e-01  3.00e+04        1    4.10e-03    7.25e-03
-   2  6.144299e+02    2.44e+05    7.37e+01   4.55e+01   1.00e+00  9.00e+04        1    2.89e-03    1.01e-02
-   3  6.027538e+02    1.17e+01    1.96e-02   4.45e-01   1.00e+00  2.70e+05        1    2.93e-03    1.31e-02
-Ceres Solver Report: Iterations: 4, Initial cost: 4.283829e+07, Final cost: 6.027538e+02, Termination: CONVERGENCE
-Estimated vx0 (px/s): 239.912
-Estimated vy0 (px/s): 339.011
-Estimated g    (px/s^2): 479.679
-Estimated k    (1/s): 0.0296021
-RMSE_x (px): 1.93981, RMSE_y (px): 2.1333
+   0  4.156861e+07    0.00e+00    1.39e+05   0.00e+00   0.00e+00  1.00e+04        0    2.80e-03    2.85e-03
+   1  1.710794e+05    4.14e+07    9.18e+03   5.83e+02   9.96e-01  3.00e+04        1    5.16e-03    8.03e-03
+   2  5.513277e+02    1.71e+05    5.43e+01   3.91e+01   1.00e+00  9.00e+04        1    5.30e-03    1.34e-02
+   3  5.446944e+02    6.63e+00    3.02e-02   3.54e-01   1.00e+00  2.70e+05        1    5.70e-03    1.91e-02
+Ceres Solver Report: Iterations: 4, Initial cost: 4.156861e+07, Final cost: 5.446944e+02, Termination: CONVERGENCE
+Estimated vx0 (px/s): 244.43
+Estimated vy0 (px/s): 341.186
+Estimated g    (px/s^2): 486.865
+Estimated k    (1/s): 0.0402198
+RMSE_x (px): 1.75352, RMSE_y (px): 2.11905
 ```
+
 #### 问题与解决
 ##### 图片轮廓捕捉不到
 对于刚开始进行轮廓捕捉，发现效果特别不好。  
