@@ -88,7 +88,7 @@ int saveimg(){
     cv::Mat frame;
     vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
-    Mat hsv,mask;
+    Mat mask,gray,binary;
     Mat result;
     while (true) {
         cap.read(frame);
@@ -96,10 +96,18 @@ int saveimg(){
             cout<<"视频源已经读完了"<<endl;
             break;
         }
-        imshow("vedio",frame);
+        Scalar wider_lower(100, 100, 0);
+        Scalar wider_upper(255, 255, 100);
+        inRange(frame, wider_lower, wider_upper, mask);
+
+        cvtColor(frame, gray, COLOR_BGR2GRAY);
+        threshold(gray, binary, 50, 255, THRESH_BINARY);
+        imshow("mask",mask);
+        imshow("gray_bin",binary);
+
         char key = waitKey(0);
         if(key == 27){
-            imwrite("resources/test.png", frame);
+            //imwrite("resources/test.png", frame);
             break;
         }
     }  
@@ -126,9 +134,9 @@ vector<Obs> testmain() {
     vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
     vector<Obs> goal;
-    Mat hsv,mask;
+    Mat hsv,gray,binary,mask,mask2;
     Mat result;
-    int count = 1;
+    int count = 0;
     int H ;
     while (true) {
         cap.read(frame);
@@ -141,8 +149,16 @@ vector<Obs> testmain() {
         cvtColor(imgGauss, hsv, COLOR_BGR2HSV);
         inRange(hsv, Scalar(0,0,0), Scalar(179,170,255), mask);
         bitwise_not(mask, mask);
-        result = mask;
-         
+
+        //球颜色检测
+        cv::Scalar lower_blue(80, 20, 20);    
+        cv::Scalar upper_blue(150, 255, 255); 
+        inRange(frame, lower_blue, upper_blue, mask2);
+
+        cvtColor(frame, gray, COLOR_BGR2GRAY);
+        threshold(gray, binary, 50, 255, THRESH_BINARY);
+
+        result = binary; 
         cv::findContours(result,contours,hierarchy,RETR_EXTERNAL,CHAIN_APPROX_SIMPLE);
         cout << "找到 " << contours.size() << " 个轮廓" << endl;
         if(contours.size()==0) break;
@@ -164,6 +180,7 @@ vector<Obs> testmain() {
         }
         imshow("vedio",result);
         imshow("controus",frame);
+        imshow("BGR",mask2);
         char key = waitKey(0);
         if(key == 27){
             break;
@@ -177,6 +194,7 @@ vector<Obs> testmain() {
     }
     cap.release();
     cv::destroyAllWindows();
+    std::cout << std::endl;
     return goal;
 }
 

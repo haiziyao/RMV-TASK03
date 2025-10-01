@@ -1,5 +1,9 @@
 # TASK03 
 ### 任务流程与结果说明
+#### 第二次提交说明
+第一次k约等于0.04，查了半天代码没有问题。最后突然想起来：  
+自己给第一帧图片的时候time设置为1/60,而不是0/60,当时脑子抽了，觉得0不是很好，所以直接从1开始了  
+实际上应该是因为以第一帧图片为原点开始建立坐标系，所以出错。  
 #### 使用说明
 可执行文件在 bin/app  
 1.程序开始执行时候，按下任意键可以切换下一帧图片，直到截止。    
@@ -8,16 +12,16 @@
 #### 结果展示
 ``` cpp
 iter      cost      cost_change  |gradient|   |step|    tr_ratio  tr_radius  ls_iter  iter_time  total_time
-   0  4.156861e+07    0.00e+00    1.39e+05   0.00e+00   0.00e+00  1.00e+04        0    2.80e-03    2.85e-03
-   1  1.710794e+05    4.14e+07    9.18e+03   5.83e+02   9.96e-01  3.00e+04        1    5.16e-03    8.03e-03
-   2  5.513277e+02    1.71e+05    5.43e+01   3.91e+01   1.00e+00  9.00e+04        1    5.30e-03    1.34e-02
-   3  5.446944e+02    6.63e+00    3.02e-02   3.54e-01   1.00e+00  2.70e+05        1    5.70e-03    1.91e-02
-Ceres Solver Report: Iterations: 4, Initial cost: 4.156861e+07, Final cost: 5.446944e+02, Termination: CONVERGENCE
-Estimated vx0 (px/s): 244.43
-Estimated vy0 (px/s): 341.186
-Estimated g    (px/s^2): 486.865
-Estimated k    (1/s): 0.0402198
-RMSE_x (px): 1.75352, RMSE_y (px): 2.11905
+   0  4.030408e+07    0.00e+00    1.36e+05   0.00e+00   0.00e+00  1.00e+04        0    2.83e-03    2.88e-03
+   1  6.170396e+04    4.02e+07    5.33e+03   5.89e+02   9.98e-01  3.00e+04        1    5.30e-03    8.21e-03
+   2  1.168977e+02    6.16e+04    2.23e+01   2.48e+01   1.00e+00  9.00e+04        1    2.88e-03    1.11e-02
+   3  1.157085e+02    1.19e+00    5.38e-02   1.82e-01   1.00e+00  2.70e+05        1    2.88e-03    1.40e-02
+Ceres Solver Report: Iterations: 4, Initial cost: 4.030408e+07, Final cost: 1.157085e+02, Termination: CONVERGENCE
+Estimated vx0 (px/s): 252.17
+Estimated vy0 (px/s): 346.387
+Estimated g    (px/s^2): 497.424
+Estimated k    (1/s): 0.0637636
+RMSE_x (px): 0.837896, RMSE_y (px): 0.951311
 ```
 
 #### 问题与解决
