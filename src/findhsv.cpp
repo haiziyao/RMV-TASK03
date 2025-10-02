@@ -90,10 +90,8 @@ int saveimg(){
     vector<Vec4i> hierarchy;
     Mat mask,gray,binary;
     Mat result;
-    int num = 1 ;
     while (true) {
         cap.read(frame);
-        if((num++)%3 == 1) continue;
         if(frame.empty()){
             cout<<"视频源已经读完了"<<endl;
             break;
@@ -136,8 +134,10 @@ vector<Obs> testmain() {
     Mat result;
     int count = 0;
     int H ;
+
     while (true) {
         cap.read(frame);
+    
         if(frame.empty()){
             cout<<"视频源已经读完了"<<endl;
             break;
@@ -160,9 +160,8 @@ vector<Obs> testmain() {
         }
 
     }  
+    
     cap.release();
-    cv::destroyAllWindows();
-    std::cout << std::endl;
     return goal;
 }
 

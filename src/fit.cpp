@@ -38,7 +38,10 @@ struct BallisticResidual {
 
 int cal(const std::vector<Obs>& obs_in) {
   std::vector<Obs> obs = obs_in;
-
+  if (obs.size() < 5) {
+    std::cerr << "Need at least 5 observations\n";
+    return 1;
+  }
 
   double x0 = obs.front().x;
   double y0 = obs.front().y;
@@ -73,7 +76,7 @@ int cal(const std::vector<Obs>& obs_in) {
   // 求解
   ceres::Solver::Options options;
   options.linear_solver_type = ceres::DENSE_QR;
-  options.minimizer_progress_to_stdout = false;
+  options.minimizer_progress_to_stdout = true;
   options.max_num_iterations = 200;
   ceres::Solver::Summary summary;
   ceres::Solve(options, &problem, &summary);
