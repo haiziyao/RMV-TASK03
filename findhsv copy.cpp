@@ -90,10 +90,8 @@ int saveimg(){
     vector<Vec4i> hierarchy;
     Mat mask,gray,binary;
     Mat result;
-    int num = 1 ;
     while (true) {
         cap.read(frame);
-        if((num++)%3 == 1) continue;
         if(frame.empty()){
             cout<<"视频源已经读完了"<<endl;
             break;
@@ -125,14 +123,18 @@ int saveimg(){
 }
 
 vector<Obs> testmain() {
+    cout << "Ceres installed!" << endl;
     string filepath = "resources/video.mp4";
     VideoCapture cap ;
     cap.open(filepath);
+    if(!cap.isOpened()){
+        cout<<"请检查视频源路径，没有找到vedio"<<endl;
+    }
     cv::Mat frame,imgGauss;
     vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
     vector<Obs> goal;
-    Mat gray;
+    Mat hsv,gray,binary,mask,mask2;
     Mat result;
     int count = 0;
     int H ;
@@ -143,10 +145,27 @@ vector<Obs> testmain() {
             break;
         }
         H = frame.rows;
-        cvtColor(frame, gray, COLOR_BGR2GRAY);
-        threshold(gray, result, 50, 255, THRESH_BINARY);
+        GaussianBlur(frame, imgGauss, Size(13,13), 7);
+        cvtColor(imgGauss, hsv, COLOR_BGR2HSV);
+        inRange(hsv, Scalar(0,0,0), Scalar(179,170,255), mask);
+        bitwise_not(mask, mask);
 
+        //球颜色检测
+        cv::Scalar lower_blue(80, 20, 20);    
+        cv::Scalar upper_blue(150, 255, 255); 
+        inRange(frame, lower_blue, upper_blue, mask2);
+
+        cvtColor(frame, gray, COLOR_BGR2GRAY);
+        threshold(gray, binary, 50, 255, THRESH_BINARY);
+
+        result = binary; 
         cv::findContours(result,contours,hierarchy,RETR_EXTERNAL,CHAIN_APPROX_SIMPLE);
+        cout << "找到 " << contours.size() << " 个轮廓" << endl;
+        if(contours.size()==0) break;
+        for (size_t i = 0; i < contours.size(); i++) {
+            drawContours(frame, contours, (int)i, Scalar(0, 0, 255), 1);
+        }
+
         for (size_t i = 0; i < contours.size(); i++) {            
             Moments mom = moments(contours[i]);
             if (mom.m00 != 0){
@@ -155,11 +174,24 @@ vector<Obs> testmain() {
                 cy = H -cy;
                 Obs obs={static_cast<double>(count++)/60,cx,cy};
                 goal.push_back(obs);
+                cout<<"("<<cx<<","<<cy<<")"<<endl;
             } 
             
         }
-
+        imshow("vedio",result);
+        imshow("controus",frame);
+        imshow("BGR",mask2);
+        char key = waitKey(0);
+        if(key == 27){
+            break;
+        }
     }  
+    while(1){
+        char key = waitKey(1);
+        if(key == 27){
+            break;
+        }
+    }
     cap.release();
     cv::destroyAllWindows();
     std::cout << std::endl;
